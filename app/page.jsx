@@ -302,6 +302,7 @@ function Nav() {
 }
 
 
+
 /* ─── Interactive Hero Chart ─── */
 const CHART_COLORS = {
   1: { main: "#ff9800", glow: "rgba(255,152,0,0.3)", dim: "rgba(255,152,0,0.12)" },
@@ -309,30 +310,29 @@ const CHART_COLORS = {
   3: { main: ACCENT, glow: ACCENT_GLOW, dim: ACCENT_DIM },
 }
 
+const SP500_LINE = "M20,155 C55,153 90,151 125,149 C160,147 195,144 230,141 C265,138 300,135 335,132 C370,129 405,126 440,123 C460,121 475,120 490,118"
+
 const CHART_PATHS = {
-  // 1 strategy: very volatile, clear loss periods, jagged, low end
   1: {
-    line: "M20,150 C30,145 38,155 50,165 C62,175 70,168 82,158 C94,148 100,162 112,172 C124,170 130,155 142,142 C154,129 160,140 172,152 C184,160 190,145 202,135 C214,125 220,140 232,148 C244,155 250,138 262,125 C274,112 280,122 292,132 C304,140 310,125 322,110 C334,95 340,108 352,118 C364,125 370,105 382,90 C394,75 400,85 412,78 C424,71 432,60 445,55 C458,50 472,58 490,50",
-    fill: "M20,150 C30,145 38,155 50,165 C62,175 70,168 82,158 C94,148 100,162 112,172 C124,170 130,155 142,142 C154,129 160,140 172,152 C184,160 190,145 202,135 C214,125 220,140 232,148 C244,155 250,138 262,125 C274,112 280,122 292,132 C304,140 310,125 322,110 C334,95 340,108 352,118 C364,125 370,105 382,90 C394,75 400,85 412,78 C424,71 432,60 445,55 C458,50 472,58 490,50 L490,185 L20,185Z",
-    endY: 50,
+    line: "M20,150 C30,145 38,158 50,168 C62,178 70,170 82,158 C94,146 100,164 112,175 C124,172 130,155 142,140 C154,125 160,142 172,155 C184,165 190,145 202,132 C214,120 220,142 232,152 C244,160 250,138 262,122 C274,108 280,125 292,138 C304,148 310,128 322,108 C334,88 340,110 352,125 C364,135 370,108 382,88 C394,68 400,82 412,75 C424,68 432,55 445,50 C458,46 472,55 490,48",
+    fill: "M20,150 C30,145 38,158 50,168 C62,178 70,170 82,158 C94,146 100,164 112,175 C124,172 130,155 142,140 C154,125 160,142 172,155 C184,165 190,145 202,132 C214,120 220,142 232,152 C244,160 250,138 262,122 C274,108 280,125 292,138 C304,148 310,128 322,108 C334,88 340,110 352,125 C364,135 370,108 382,88 C394,68 400,82 412,75 C424,68 432,55 445,50 C458,46 472,55 490,48 L490,185 L20,185Z",
+    endY: 48,
     pct: "+18.3%",
     label: "Volatiel — verliesperiodes",
     labelColor: "#ff9800",
   },
-  // 2 strategies: moderate, some wobble, decent growth
   2: {
-    line: "M20,155 C35,150 50,146 65,140 C80,134 90,138 105,132 C120,126 135,130 150,122 C165,114 175,118 190,110 C205,102 220,98 235,90 C250,82 260,86 275,78 C290,70 305,66 320,58 C335,50 345,54 360,46 C375,38 390,34 405,28 C420,22 440,18 460,14 C475,11 485,10 490,8",
-    fill: "M20,155 C35,150 50,146 65,140 C80,134 90,138 105,132 C120,126 135,130 150,122 C165,114 175,118 190,110 C205,102 220,98 235,90 C250,82 260,86 275,78 C290,70 305,66 320,58 C335,50 345,54 360,46 C375,38 390,34 405,28 C420,22 440,18 460,14 C475,11 485,10 490,8 L490,185 L20,185Z",
-    endY: 8,
-    pct: "+62.5%",
-    label: "Stabieler groeipad",
+    line: "M20,155 C35,150 50,145 65,138 C80,131 90,136 105,128 C120,120 135,125 150,116 C165,107 175,112 190,103 C205,94 220,88 235,80 C250,72 260,78 275,68 C290,58 305,52 320,44 C335,36 345,42 360,34 C375,26 390,22 405,18 C420,14 440,12 460,10 C475,9 485,8 490,7",
+    fill: "M20,155 C35,150 50,145 65,138 C80,131 90,136 105,128 C120,120 135,125 150,116 C165,107 175,112 190,103 C205,94 220,88 235,80 C250,72 260,78 275,68 C290,58 305,52 320,44 C335,36 345,42 360,34 C375,26 390,22 405,18 C420,14 440,12 460,10 C475,9 485,8 490,7 L490,185 L20,185Z",
+    endY: 7,
+    pct: "+58.2%",
+    label: "Stabieler — minder drawdown",
     labelColor: "#4caf50",
   },
-  // 3 strategies: very smooth, consistent, highest end
   3: {
-    line: "M20,155 C38,151 56,147 74,143 C92,139 110,135 128,131 C146,127 164,123 182,118 C200,113 218,108 236,103 C254,98 272,92 290,86 C308,80 326,73 344,66 C362,59 380,51 398,43 C416,35 434,27 452,20 C470,13 480,9 490,6",
-    fill: "M20,155 C38,151 56,147 74,143 C92,139 110,135 128,131 C146,127 164,123 182,118 C200,113 218,108 236,103 C254,98 272,92 290,86 C308,80 326,73 344,66 C362,59 380,51 398,43 C416,35 434,27 452,20 C470,13 480,9 490,6 L490,185 L20,185Z",
-    endY: 6,
+    line: "M20,158 C38,154 56,149 74,144 C92,139 110,134 128,129 C146,124 164,118 182,112 C200,106 218,99 236,92 C254,85 272,77 290,69 C308,61 326,52 344,43 C362,34 380,25 398,18 C416,12 434,8 452,5 C470,3 480,2 490,2",
+    fill: "M20,158 C38,154 56,149 74,144 C92,139 110,134 128,129 C146,124 164,118 182,112 C200,106 218,99 236,92 C254,85 272,77 290,69 C308,61 326,52 344,43 C362,34 380,25 398,18 C416,12 434,8 452,5 C470,3 480,2 490,2 L490,185 L20,185Z",
+    endY: 2,
     pct: "+87.4%",
     label: "Consistent — maximale spreiding",
     labelColor: ACCENT,
@@ -340,52 +340,10 @@ const CHART_PATHS = {
 }
 
 const STRATEGIES = [
-  { id: 1, name: "Scalpstrategie", color: ACCENT },
-  { id: 2, name: "Gridstrategie", color: "#A78BFA" },
-  { id: 3, name: "Manueel", color: "#FCD34D" },
+  { id: 1, name: "Scalp" },
+  { id: 2, name: "Grid" },
+  { id: 3, name: "Manueel" },
 ]
-
-function ToggleSlider({ active, color, label, onToggle }) {
-  return (
-    <button onClick={onToggle} style={{
-      display: "flex", alignItems: "center", gap: 10,
-      background: "none", border: "none", cursor: "pointer", padding: "6px 0",
-      width: "100%",
-    }}>
-      {/* Slider track */}
-      <div style={{
-        width: 40, height: 22, borderRadius: 11, padding: 2,
-        background: active ? color : "#222",
-        transition: "background 0.3s",
-        flexShrink: 0,
-        display: "flex", alignItems: "center",
-      }}>
-        {/* Slider thumb */}
-        <div style={{
-          width: 18, height: 18, borderRadius: "50%",
-          background: "#fff",
-          transform: active ? "translateX(18px)" : "translateX(0)",
-          transition: "transform 0.3s cubic-bezier(.23,1,.32,1)",
-          boxShadow: active ? `0 0 8px ${color}80` : "0 1px 3px rgba(0,0,0,0.4)",
-        }} />
-      </div>
-      {/* Label */}
-      <span style={{
-        color: active ? "#fff" : "#555",
-        fontSize: "0.82rem", fontWeight: 500,
-        transition: "color 0.3s",
-      }}>{label}</span>
-      {/* Active dot */}
-      <span style={{
-        width: 6, height: 6, borderRadius: "50%",
-        background: active ? color : "transparent",
-        marginLeft: "auto", flexShrink: 0,
-        transition: "all 0.3s",
-        boxShadow: active ? `0 0 6px ${color}60` : "none",
-      }} />
-    </button>
-  )
-}
 
 function HeroChart() {
   const [active, setActive] = useState(new Set([1, 2, 3]))
@@ -414,52 +372,73 @@ function HeroChart() {
       border: "1px solid #1a1a1a", borderRadius: 24, position: "relative",
       boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(137,251,246,0.04)",
     }}>
-      {/* Top bar color matches chart */}
+      <style>{`
+        .chart-toggles { display: flex; gap: 10px; }
+        .chart-header-top { flex-direction: row; justify-content: space-between; }
+        @media (max-width: 500px) {
+          .chart-header-top { flex-direction: column !important; }
+        }
+      `}</style>
+
       <div style={{ height: 2, background: `linear-gradient(90deg, transparent, ${colors.main}, transparent)`, borderRadius: "24px 24px 0 0", transition: "all 0.5s" }} />
 
-      {/* Header */}
       <div style={{ padding: "28px 28px 0" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6, flexWrap: "wrap", gap: 8 }}>
+        <div className="chart-header-top" style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 12 }}>
           <div>
             <span style={{ color: "#555", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em" }}>Portfolio groei</span>
-            <div style={{
-              color: colors.main, fontSize: "2.2rem", fontWeight: 800, letterSpacing: "-0.03em", marginTop: 4,
-              transition: "color 0.5s",
-            }}>
+            <div style={{ color: colors.main, fontSize: "2.2rem", fontWeight: 800, letterSpacing: "-0.03em", marginTop: 4, transition: "color 0.5s" }}>
               {chart.pct}
             </div>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 6,
+              background: `${chart.labelColor}12`, borderRadius: 100, padding: "5px 12px",
+              transition: "all 0.5s", marginTop: 6,
+            }}>
+              <span style={{ width: 5, height: 5, borderRadius: "50%", background: chart.labelColor, transition: "background 0.5s" }} />
+              <span style={{ color: chart.labelColor, fontSize: "0.66rem", fontWeight: 600, whiteSpace: "nowrap", transition: "color 0.5s" }}>{chart.label}</span>
+            </div>
           </div>
-          <div style={{
-            display: "flex", alignItems: "center", gap: 6,
-            background: `${chart.labelColor}12`, borderRadius: 100, padding: "6px 14px",
-            transition: "all 0.5s", marginTop: 8,
-          }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: chart.labelColor, transition: "background 0.5s" }} />
-            <span style={{ color: chart.labelColor, fontSize: "0.68rem", fontWeight: 600, whiteSpace: "nowrap", transition: "color 0.5s" }}>{chart.label}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 8, flexShrink: 0 }}>
+            <div style={{ width: 16, height: 2, background: "#555", borderRadius: 1 }} />
+            <span style={{ color: "#444", fontSize: "0.65rem", fontWeight: 500 }}>S&P 500</span>
           </div>
         </div>
 
-        {/* Strategy toggle sliders */}
         <div style={{
-          marginTop: 20, marginBottom: 16,
+          marginTop: 8, marginBottom: 16,
           background: "#080808", border: "1px solid #151515", borderRadius: 14,
-          padding: "14px 18px",
-          display: "flex", flexDirection: "column", gap: 6,
+          padding: "14px 16px",
         }}>
-          <span style={{ color: "#444", fontSize: "0.65rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Actieve strategieën</span>
-          {STRATEGIES.map((s) => (
-            <ToggleSlider
-              key={s.id}
-              active={active.has(s.id)}
-              color={s.color}
-              label={s.name}
-              onToggle={() => toggleStrategy(s.id)}
-            />
-          ))}
+          <span style={{ color: "#444", fontSize: "0.62rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", display: "block", marginBottom: 10 }}>Actieve strategieën</span>
+          <div className="chart-toggles">
+            {STRATEGIES.map((s) => {
+              const isOn = active.has(s.id)
+              return (
+                <button key={s.id} onClick={() => toggleStrategy(s.id)} style={{
+                  flex: 1, display: "flex", alignItems: "center", gap: 8,
+                  background: "none", border: "none", cursor: "pointer", padding: 0,
+                }}>
+                  <div style={{
+                    width: 36, height: 20, borderRadius: 10, padding: 2,
+                    background: isOn ? ACCENT : "#282828",
+                    transition: "background 0.3s",
+                    flexShrink: 0, display: "flex", alignItems: "center",
+                  }}>
+                    <div style={{
+                      width: 16, height: 16, borderRadius: "50%", background: "#fff",
+                      transform: isOn ? "translateX(16px)" : "translateX(0)",
+                      transition: "transform 0.3s cubic-bezier(.23,1,.32,1)",
+                      boxShadow: isOn ? `0 0 8px ${ACCENT}60` : "0 1px 3px rgba(0,0,0,0.4)",
+                    }} />
+                  </div>
+                  <span style={{ color: isOn ? "#fff" : "#555", fontSize: "0.75rem", fontWeight: 500, transition: "color 0.3s" }}>{s.name}</span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Chart — fixed height container to prevent jumping */}
       <div style={{ padding: "0 8px 0 0", position: "relative", height: 180 }}>
         <svg key={animKey} viewBox="0 0 510 200" preserveAspectRatio="xMidYMid meet" style={{ width: "100%", height: "100%", display: "block", overflow: "visible", position: "absolute", top: 0, left: 0 }}>
           <defs>
@@ -473,38 +452,25 @@ function HeroChart() {
               <stop offset="30%" stopColor={colors.main} stopOpacity="0.5"/>
               <stop offset="100%" stopColor={colors.main} stopOpacity="1"/>
             </linearGradient>
-            <filter id="gl">
-              <feGaussianBlur stdDeviation="3" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="dg">
-              <feGaussianBlur stdDeviation="6" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
+            <filter id="gl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="dg"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
           </defs>
 
-          {/* Grid lines */}
           {[50, 100, 150].map(y => (
             <line key={y} x1="20" y1={y} x2="490" y2={y} stroke="#1a1a1a" strokeWidth="0.5" strokeDasharray="4 6"/>
           ))}
 
-          {/* Fill area */}
+          <path d={SP500_LINE} fill="none" stroke="#444" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="6 4" opacity="0.5"/>
+          <text x="490" y="114" fill="#444" fontSize="7" fontFamily="sans-serif" textAnchor="end">S&P 500</text>
+
           <path d={chart.fill} fill="url(#cFill)">
             <animate attributeName="opacity" from="0" to="1" dur="1.2s" fill="freeze"/>
           </path>
 
-          {/* Main line */}
-          <path
-            d={chart.line}
-            fill="none" stroke="url(#cStroke)" strokeWidth="2.5" strokeLinecap="round"
-            filter="url(#gl)"
-            strokeDasharray="1400"
-            strokeDashoffset="1400"
-          >
-            <animate attributeName="stroke-dashoffset" from="1400" to="0" dur="3.5s" fill="freeze" calcMode="spline" keySplines="0.23 1 0.32 1"/>
+          <path d={chart.line} fill="none" stroke="url(#cStroke)" strokeWidth="2.5" strokeLinecap="round" filter="url(#gl)" strokeDasharray="1600" strokeDashoffset="1600">
+            <animate attributeName="stroke-dashoffset" from="1600" to="0" dur="3.5s" fill="freeze" calcMode="spline" keySplines="0.23 1 0.32 1"/>
           </path>
 
-          {/* End pulse dot — color matches */}
           <circle cx="490" cy={chart.endY} r="14" fill={colors.main} opacity="0.1">
             <animate attributeName="r" values="14;24;14" dur="2.5s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0.1;0.03;0.1" dur="2.5s" repeatCount="indefinite"/>
@@ -515,7 +481,6 @@ function HeroChart() {
           </circle>
           <circle cx="490" cy={chart.endY} r="4" fill={colors.main} filter="url(#dg)"/>
 
-          {/* Month labels */}
           {[
             {x:20,l:"Jan"},{x:78,l:"Feb"},{x:137,l:"Mrt"},{x:196,l:"Apr"},
             {x:255,l:"Mei"},{x:313,l:"Jun"},{x:372,l:"Jul"},{x:431,l:"Aug"},{x:490,l:"Sep"},
@@ -525,20 +490,13 @@ function HeroChart() {
         </svg>
       </div>
 
-      {/* Bottom stats */}
-      <div style={{
-        display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 0,
-        margin: "0 24px", borderTop: "1px solid #151515",
-      }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 0, margin: "0 24px", borderTop: "1px solid #151515" }}>
         {[
           { label: "Rendement", val: chart.pct, color: colors.main },
           { label: "Strategieën", val: `${count}/3`, color: count === 3 ? ACCENT : count === 2 ? "#4caf50" : "#ff9800" },
           { label: "Stabiliteit", val: count === 3 ? "Hoog" : count === 2 ? "Gemiddeld" : "Laag", color: count === 3 ? ACCENT : count === 2 ? "#4caf50" : "#ef4444" },
         ].map((m, i) => (
-          <div key={i} style={{
-            textAlign: "center", padding: "18px 8px",
-            borderRight: i < 2 ? "1px solid #151515" : "none",
-          }}>
+          <div key={i} style={{ textAlign: "center", padding: "18px 8px", borderRight: i < 2 ? "1px solid #151515" : "none" }}>
             <div style={{ color: m.color, fontWeight: 700, fontSize: "1rem", marginBottom: 3, transition: "color 0.5s" }}>{m.val}</div>
             <div style={{ color: "#444", fontSize: "0.68rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.06em" }}>{m.label}</div>
           </div>
