@@ -303,41 +303,89 @@ function Nav() {
 
 
 /* ─── Interactive Hero Chart ─── */
+const CHART_COLORS = {
+  1: { main: "#ff9800", glow: "rgba(255,152,0,0.3)", dim: "rgba(255,152,0,0.12)" },
+  2: { main: "#4caf50", glow: "rgba(76,175,80,0.3)", dim: "rgba(76,175,80,0.12)" },
+  3: { main: ACCENT, glow: ACCENT_GLOW, dim: ACCENT_DIM },
+}
+
 const CHART_PATHS = {
-  // 1 strategy: volatile, dips, lower end result
+  // 1 strategy: very volatile, clear loss periods, jagged, low end
   1: {
-    line: "M20,155 C35,150 45,158 65,162 C85,166 95,155 110,148 C125,141 135,152 150,158 C165,164 175,148 190,140 C205,132 215,142 230,135 C245,128 255,138 270,130 C285,122 295,115 310,120 C325,125 335,108 350,100 C365,92 375,85 390,78 C405,71 420,68 440,62 C455,58 470,52 490,45",
-    fill: "M20,155 C35,150 45,158 65,162 C85,166 95,155 110,148 C125,141 135,152 150,158 C165,164 175,148 190,140 C205,132 215,142 230,135 C245,128 255,138 270,130 C285,122 295,115 310,120 C325,125 335,108 350,100 C365,92 375,85 390,78 C405,71 420,68 440,62 C455,58 470,52 490,45 L490,185 L20,185Z",
-    endY: 45,
-    pct: "+32.1%",
-    label: "Volatiel — periodes van verlies",
+    line: "M20,150 C30,145 38,155 50,165 C62,175 70,168 82,158 C94,148 100,162 112,172 C124,170 130,155 142,142 C154,129 160,140 172,152 C184,160 190,145 202,135 C214,125 220,140 232,148 C244,155 250,138 262,125 C274,112 280,122 292,132 C304,140 310,125 322,110 C334,95 340,108 352,118 C364,125 370,105 382,90 C394,75 400,85 412,78 C424,71 432,60 445,55 C458,50 472,58 490,50",
+    fill: "M20,150 C30,145 38,155 50,165 C62,175 70,168 82,158 C94,148 100,162 112,172 C124,170 130,155 142,142 C154,129 160,140 172,152 C184,160 190,145 202,135 C214,125 220,140 232,148 C244,155 250,138 262,125 C274,112 280,122 292,132 C304,140 310,125 322,110 C334,95 340,108 352,118 C364,125 370,105 382,90 C394,75 400,85 412,78 C424,71 432,60 445,55 C458,50 472,58 490,50 L490,185 L20,185Z",
+    endY: 50,
+    pct: "+18.3%",
+    label: "Volatiel — verliesperiodes",
     labelColor: "#ff9800",
   },
-  // 2 strategies: smoother but still some dips
+  // 2 strategies: moderate, some wobble, decent growth
   2: {
-    line: "M20,155 C35,151 50,147 65,143 C80,139 95,142 110,136 C125,130 140,133 155,126 C170,119 185,122 200,115 C215,108 230,105 245,98 C260,91 275,95 290,86 C305,77 320,74 335,68 C350,62 365,58 380,52 C395,46 410,42 430,36 C450,30 470,26 490,22",
-    fill: "M20,155 C35,151 50,147 65,143 C80,139 95,142 110,136 C125,130 140,133 155,126 C170,119 185,122 200,115 C215,108 230,105 245,98 C260,91 275,95 290,86 C305,77 320,74 335,68 C350,62 365,58 380,52 C395,46 410,42 430,36 C450,30 470,26 490,22 L490,185 L20,185Z",
-    endY: 22,
-    pct: "+61.7%",
-    label: "Stabieler — minder pieken en dalen",
-    labelColor: "#A78BFA",
-  },
-  // 3 strategies: smooth consistent growth
-  3: {
-    line: "M20,155 C40,150 55,146 70,141 C85,136 100,132 115,127 C130,122 145,118 160,113 C175,108 190,104 205,99 C220,94 235,89 250,84 C265,79 280,74 295,68 C310,62 325,56 340,50 C355,44 370,38 385,33 C400,28 415,23 435,18 C455,14 475,11 490,8",
-    fill: "M20,155 C40,150 55,146 70,141 C85,136 100,132 115,127 C130,122 145,118 160,113 C175,108 190,104 205,99 C220,94 235,89 250,84 C265,79 280,74 295,68 C310,62 325,56 340,50 C355,44 370,38 385,33 C400,28 415,23 435,18 C455,14 475,11 490,8 L490,185 L20,185Z",
+    line: "M20,155 C35,150 50,146 65,140 C80,134 90,138 105,132 C120,126 135,130 150,122 C165,114 175,118 190,110 C205,102 220,98 235,90 C250,82 260,86 275,78 C290,70 305,66 320,58 C335,50 345,54 360,46 C375,38 390,34 405,28 C420,22 440,18 460,14 C475,11 485,10 490,8",
+    fill: "M20,155 C35,150 50,146 65,140 C80,134 90,138 105,132 C120,126 135,130 150,122 C165,114 175,118 190,110 C205,102 220,98 235,90 C250,82 260,86 275,78 C290,70 305,66 320,58 C335,50 345,54 360,46 C375,38 390,34 405,28 C420,22 440,18 460,14 C475,11 485,10 490,8 L490,185 L20,185Z",
     endY: 8,
-    pct: "+87.4%",
-    label: "Consistent — gespreid risico",
+    pct: "+62.5%",
+    label: "Stabieler groeipad",
     labelColor: "#4caf50",
+  },
+  // 3 strategies: very smooth, consistent, highest end
+  3: {
+    line: "M20,155 C38,151 56,147 74,143 C92,139 110,135 128,131 C146,127 164,123 182,118 C200,113 218,108 236,103 C254,98 272,92 290,86 C308,80 326,73 344,66 C362,59 380,51 398,43 C416,35 434,27 452,20 C470,13 480,9 490,6",
+    fill: "M20,155 C38,151 56,147 74,143 C92,139 110,135 128,131 C146,127 164,123 182,118 C200,113 218,108 236,103 C254,98 272,92 290,86 C308,80 326,73 344,66 C362,59 380,51 398,43 C416,35 434,27 452,20 C470,13 480,9 490,6 L490,185 L20,185Z",
+    endY: 6,
+    pct: "+87.4%",
+    label: "Consistent — maximale spreiding",
+    labelColor: ACCENT,
   },
 }
 
 const STRATEGIES = [
-  { id: 1, name: "Scalp", color: ACCENT },
-  { id: 2, name: "Grid", color: "#A78BFA" },
+  { id: 1, name: "Scalpstrategie", color: ACCENT },
+  { id: 2, name: "Gridstrategie", color: "#A78BFA" },
   { id: 3, name: "Manueel", color: "#FCD34D" },
 ]
+
+function ToggleSlider({ active, color, label, onToggle }) {
+  return (
+    <button onClick={onToggle} style={{
+      display: "flex", alignItems: "center", gap: 10,
+      background: "none", border: "none", cursor: "pointer", padding: "6px 0",
+      width: "100%",
+    }}>
+      {/* Slider track */}
+      <div style={{
+        width: 40, height: 22, borderRadius: 11, padding: 2,
+        background: active ? color : "#222",
+        transition: "background 0.3s",
+        flexShrink: 0,
+        display: "flex", alignItems: "center",
+      }}>
+        {/* Slider thumb */}
+        <div style={{
+          width: 18, height: 18, borderRadius: "50%",
+          background: "#fff",
+          transform: active ? "translateX(18px)" : "translateX(0)",
+          transition: "transform 0.3s cubic-bezier(.23,1,.32,1)",
+          boxShadow: active ? `0 0 8px ${color}80` : "0 1px 3px rgba(0,0,0,0.4)",
+        }} />
+      </div>
+      {/* Label */}
+      <span style={{
+        color: active ? "#fff" : "#555",
+        fontSize: "0.82rem", fontWeight: 500,
+        transition: "color 0.3s",
+      }}>{label}</span>
+      {/* Active dot */}
+      <span style={{
+        width: 6, height: 6, borderRadius: "50%",
+        background: active ? color : "transparent",
+        marginLeft: "auto", flexShrink: 0,
+        transition: "all 0.3s",
+        boxShadow: active ? `0 0 6px ${color}60` : "none",
+      }} />
+    </button>
+  )
+}
 
 function HeroChart() {
   const [active, setActive] = useState(new Set([1, 2, 3]))
@@ -358,6 +406,7 @@ function HeroChart() {
 
   const count = active.size
   const chart = CHART_PATHS[count]
+  const colors = CHART_COLORS[count]
 
   return (
     <div style={{
@@ -365,82 +414,64 @@ function HeroChart() {
       border: "1px solid #1a1a1a", borderRadius: 24, position: "relative",
       boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(137,251,246,0.04)",
     }}>
-      <div style={{ height: 2, background: `linear-gradient(90deg, transparent, ${ACCENT}, transparent)`, borderRadius: "24px 24px 0 0" }} />
+      {/* Top bar color matches chart */}
+      <div style={{ height: 2, background: `linear-gradient(90deg, transparent, ${colors.main}, transparent)`, borderRadius: "24px 24px 0 0", transition: "all 0.5s" }} />
 
       {/* Header */}
       <div style={{ padding: "28px 28px 0" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6, flexWrap: "wrap", gap: 8 }}>
           <div>
             <span style={{ color: "#555", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em" }}>Portfolio groei</span>
             <div style={{
-              color: "#fff", fontSize: "2rem", fontWeight: 800, letterSpacing: "-0.03em", marginTop: 4,
-              transition: "all 0.4s",
+              color: colors.main, fontSize: "2.2rem", fontWeight: 800, letterSpacing: "-0.03em", marginTop: 4,
+              transition: "color 0.5s",
             }}>
               {chart.pct}
             </div>
           </div>
           <div style={{
             display: "flex", alignItems: "center", gap: 6,
-            background: `${chart.labelColor}15`, borderRadius: 100, padding: "6px 14px",
-            transition: "all 0.4s",
+            background: `${chart.labelColor}12`, borderRadius: 100, padding: "6px 14px",
+            transition: "all 0.5s", marginTop: 8,
           }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: chart.labelColor }} />
-            <span style={{ color: chart.labelColor, fontSize: "0.68rem", fontWeight: 600, whiteSpace: "nowrap", transition: "color 0.4s" }}>{chart.label}</span>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: chart.labelColor, transition: "background 0.5s" }} />
+            <span style={{ color: chart.labelColor, fontSize: "0.68rem", fontWeight: 600, whiteSpace: "nowrap", transition: "color 0.5s" }}>{chart.label}</span>
           </div>
         </div>
 
-        {/* Strategy toggles */}
-        <div style={{ display: "flex", gap: 8, marginTop: 16, marginBottom: 16 }}>
-          {STRATEGIES.map((s) => {
-            const isActive = active.has(s.id)
-            return (
-              <button
-                key={s.id}
-                onClick={() => toggleStrategy(s.id)}
-                style={{
-                  flex: 1,
-                  padding: "10px 8px",
-                  borderRadius: 10,
-                  border: `1px solid ${isActive ? s.color + "50" : "#1a1a1a"}`,
-                  background: isActive ? s.color + "12" : "#0a0a0a",
-                  cursor: "pointer",
-                  transition: "all 0.3s",
-                  display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-                }}
-              >
-                <span style={{
-                  width: 8, height: 8, borderRadius: "50%",
-                  background: isActive ? s.color : "#333",
-                  transition: "all 0.3s",
-                  boxShadow: isActive ? `0 0 8px ${s.color}50` : "none",
-                }} />
-                <span style={{
-                  color: isActive ? s.color : "#555",
-                  fontSize: "0.72rem", fontWeight: 600,
-                  transition: "color 0.3s",
-                }}>{s.name}</span>
-              </button>
-            )
-          })}
+        {/* Strategy toggle sliders */}
+        <div style={{
+          marginTop: 20, marginBottom: 16,
+          background: "#080808", border: "1px solid #151515", borderRadius: 14,
+          padding: "14px 18px",
+          display: "flex", flexDirection: "column", gap: 6,
+        }}>
+          <span style={{ color: "#444", fontSize: "0.65rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Actieve strategieën</span>
+          {STRATEGIES.map((s) => (
+            <ToggleSlider
+              key={s.id}
+              active={active.has(s.id)}
+              color={s.color}
+              label={s.name}
+              onToggle={() => toggleStrategy(s.id)}
+            />
+          ))}
         </div>
-        <p style={{ color: "#333", fontSize: "0.7rem", textAlign: "center", marginBottom: 12 }}>
-          Klik om strategieën toe te voegen of te verwijderen
-        </p>
       </div>
 
-      {/* Chart */}
-      <div style={{ padding: "0 8px 0 0", position: "relative" }}>
-        <svg key={animKey} viewBox="0 0 510 200" style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}>
+      {/* Chart — fixed height container to prevent jumping */}
+      <div style={{ padding: "0 8px 0 0", position: "relative", height: 180 }}>
+        <svg key={animKey} viewBox="0 0 510 200" preserveAspectRatio="xMidYMid meet" style={{ width: "100%", height: "100%", display: "block", overflow: "visible", position: "absolute", top: 0, left: 0 }}>
           <defs>
             <linearGradient id="cFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={ACCENT} stopOpacity="0.2"/>
-              <stop offset="50%" stopColor={ACCENT} stopOpacity="0.05"/>
-              <stop offset="100%" stopColor={ACCENT} stopOpacity="0"/>
+              <stop offset="0%" stopColor={colors.main} stopOpacity="0.22"/>
+              <stop offset="50%" stopColor={colors.main} stopOpacity="0.06"/>
+              <stop offset="100%" stopColor={colors.main} stopOpacity="0"/>
             </linearGradient>
             <linearGradient id="cStroke" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor={ACCENT} stopOpacity="0.2"/>
-              <stop offset="40%" stopColor={ACCENT} stopOpacity="0.6"/>
-              <stop offset="100%" stopColor={ACCENT} stopOpacity="1"/>
+              <stop offset="0%" stopColor={colors.main} stopOpacity="0.15"/>
+              <stop offset="30%" stopColor={colors.main} stopOpacity="0.5"/>
+              <stop offset="100%" stopColor={colors.main} stopOpacity="1"/>
             </linearGradient>
             <filter id="gl">
               <feGaussianBlur stdDeviation="3" result="b"/>
@@ -457,33 +488,32 @@ function HeroChart() {
             <line key={y} x1="20" y1={y} x2="490" y2={y} stroke="#1a1a1a" strokeWidth="0.5" strokeDasharray="4 6"/>
           ))}
 
-          {/* Fill */}
-          <path d={chart.fill} fill="url(#cFill)" style={{ transition: "d 0.8s cubic-bezier(.23,1,.32,1)" }}>
-            <animate attributeName="opacity" from="0" to="1" dur="1s" fill="freeze"/>
+          {/* Fill area */}
+          <path d={chart.fill} fill="url(#cFill)">
+            <animate attributeName="opacity" from="0" to="1" dur="1.2s" fill="freeze"/>
           </path>
 
-          {/* Line */}
+          {/* Main line */}
           <path
             d={chart.line}
             fill="none" stroke="url(#cStroke)" strokeWidth="2.5" strokeLinecap="round"
             filter="url(#gl)"
-            strokeDasharray="1200"
-            strokeDashoffset="1200"
-            style={{ transition: "d 0.8s cubic-bezier(.23,1,.32,1)" }}
+            strokeDasharray="1400"
+            strokeDashoffset="1400"
           >
-            <animate attributeName="stroke-dashoffset" from="1200" to="0" dur="3s" fill="freeze" calcMode="spline" keySplines="0.23 1 0.32 1"/>
+            <animate attributeName="stroke-dashoffset" from="1400" to="0" dur="3.5s" fill="freeze" calcMode="spline" keySplines="0.23 1 0.32 1"/>
           </path>
 
-          {/* End pulse dot */}
-          <circle cx="490" cy={chart.endY} r="14" fill={ACCENT} opacity="0.12">
-            <animate attributeName="r" values="14;22;14" dur="2.5s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0.12;0.04;0.12" dur="2.5s" repeatCount="indefinite"/>
+          {/* End pulse dot — color matches */}
+          <circle cx="490" cy={chart.endY} r="14" fill={colors.main} opacity="0.1">
+            <animate attributeName="r" values="14;24;14" dur="2.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.1;0.03;0.1" dur="2.5s" repeatCount="indefinite"/>
           </circle>
-          <circle cx="490" cy={chart.endY} r="6" fill={ACCENT} opacity="0.2">
-            <animate attributeName="r" values="6;10;6" dur="2.5s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0.2;0.08;0.2" dur="2.5s" repeatCount="indefinite"/>
+          <circle cx="490" cy={chart.endY} r="7" fill={colors.main} opacity="0.18">
+            <animate attributeName="r" values="7;12;7" dur="2.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.18;0.06;0.18" dur="2.5s" repeatCount="indefinite"/>
           </circle>
-          <circle cx="490" cy={chart.endY} r="4" fill={ACCENT} filter="url(#dg)"/>
+          <circle cx="490" cy={chart.endY} r="4" fill={colors.main} filter="url(#dg)"/>
 
           {/* Month labels */}
           {[
@@ -501,15 +531,15 @@ function HeroChart() {
         margin: "0 24px", borderTop: "1px solid #151515",
       }}>
         {[
-          { label: "Rendement", val: chart.pct, color: count === 3 ? "#4caf50" : count === 2 ? "#A78BFA" : "#ff9800" },
-          { label: "Strategieën", val: `${count}/3`, color: count === 3 ? ACCENT : "#555" },
-          { label: "Stabiliteit", val: count === 3 ? "Hoog" : count === 2 ? "Gemiddeld" : "Laag", color: count === 3 ? "#4caf50" : count === 2 ? "#ff9800" : "#ef4444" },
+          { label: "Rendement", val: chart.pct, color: colors.main },
+          { label: "Strategieën", val: `${count}/3`, color: count === 3 ? ACCENT : count === 2 ? "#4caf50" : "#ff9800" },
+          { label: "Stabiliteit", val: count === 3 ? "Hoog" : count === 2 ? "Gemiddeld" : "Laag", color: count === 3 ? ACCENT : count === 2 ? "#4caf50" : "#ef4444" },
         ].map((m, i) => (
           <div key={i} style={{
             textAlign: "center", padding: "18px 8px",
             borderRight: i < 2 ? "1px solid #151515" : "none",
           }}>
-            <div style={{ color: m.color, fontWeight: 700, fontSize: "1rem", marginBottom: 3, transition: "all 0.4s" }}>{m.val}</div>
+            <div style={{ color: m.color, fontWeight: 700, fontSize: "1rem", marginBottom: 3, transition: "color 0.5s" }}>{m.val}</div>
             <div style={{ color: "#444", fontSize: "0.68rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.06em" }}>{m.label}</div>
           </div>
         ))}
