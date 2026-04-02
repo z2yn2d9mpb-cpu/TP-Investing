@@ -302,6 +302,225 @@ function Nav() {
 }
 
 
+/* ─── Interactive Hero Chart ─── */
+const CHART_PATHS = {
+  // 1 strategy: volatile, dips, lower end result
+  1: {
+    line: "M20,155 C35,150 45,158 65,162 C85,166 95,155 110,148 C125,141 135,152 150,158 C165,164 175,148 190,140 C205,132 215,142 230,135 C245,128 255,138 270,130 C285,122 295,115 310,120 C325,125 335,108 350,100 C365,92 375,85 390,78 C405,71 420,68 440,62 C455,58 470,52 490,45",
+    fill: "M20,155 C35,150 45,158 65,162 C85,166 95,155 110,148 C125,141 135,152 150,158 C165,164 175,148 190,140 C205,132 215,142 230,135 C245,128 255,138 270,130 C285,122 295,115 310,120 C325,125 335,108 350,100 C365,92 375,85 390,78 C405,71 420,68 440,62 C455,58 470,52 490,45 L490,185 L20,185Z",
+    endY: 45,
+    pct: "+32.1%",
+    label: "Volatiel — periodes van verlies",
+    labelColor: "#ff9800",
+  },
+  // 2 strategies: smoother but still some dips
+  2: {
+    line: "M20,155 C35,151 50,147 65,143 C80,139 95,142 110,136 C125,130 140,133 155,126 C170,119 185,122 200,115 C215,108 230,105 245,98 C260,91 275,95 290,86 C305,77 320,74 335,68 C350,62 365,58 380,52 C395,46 410,42 430,36 C450,30 470,26 490,22",
+    fill: "M20,155 C35,151 50,147 65,143 C80,139 95,142 110,136 C125,130 140,133 155,126 C170,119 185,122 200,115 C215,108 230,105 245,98 C260,91 275,95 290,86 C305,77 320,74 335,68 C350,62 365,58 380,52 C395,46 410,42 430,36 C450,30 470,26 490,22 L490,185 L20,185Z",
+    endY: 22,
+    pct: "+61.7%",
+    label: "Stabieler — minder pieken en dalen",
+    labelColor: "#A78BFA",
+  },
+  // 3 strategies: smooth consistent growth
+  3: {
+    line: "M20,155 C40,150 55,146 70,141 C85,136 100,132 115,127 C130,122 145,118 160,113 C175,108 190,104 205,99 C220,94 235,89 250,84 C265,79 280,74 295,68 C310,62 325,56 340,50 C355,44 370,38 385,33 C400,28 415,23 435,18 C455,14 475,11 490,8",
+    fill: "M20,155 C40,150 55,146 70,141 C85,136 100,132 115,127 C130,122 145,118 160,113 C175,108 190,104 205,99 C220,94 235,89 250,84 C265,79 280,74 295,68 C310,62 325,56 340,50 C355,44 370,38 385,33 C400,28 415,23 435,18 C455,14 475,11 490,8 L490,185 L20,185Z",
+    endY: 8,
+    pct: "+87.4%",
+    label: "Consistent — gespreid risico",
+    labelColor: "#4caf50",
+  },
+}
+
+const STRATEGIES = [
+  { id: 1, name: "Scalp", color: ACCENT },
+  { id: 2, name: "Grid", color: "#A78BFA" },
+  { id: 3, name: "Manueel", color: "#FCD34D" },
+]
+
+function HeroChart() {
+  const [active, setActive] = useState(new Set([1, 2, 3]))
+  const [animKey, setAnimKey] = useState(0)
+
+  const toggleStrategy = (id) => {
+    setActive(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) {
+        if (next.size > 1) next.delete(id)
+      } else {
+        next.add(id)
+      }
+      return next
+    })
+    setAnimKey(k => k + 1)
+  }
+
+  const count = active.size
+  const chart = CHART_PATHS[count]
+
+  return (
+    <div style={{
+      width: "100%", maxWidth: 540, background: "linear-gradient(170deg, #0d0d0d 0%, #080808 100%)",
+      border: "1px solid #1a1a1a", borderRadius: 24, position: "relative",
+      boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(137,251,246,0.04)",
+    }}>
+      <div style={{ height: 2, background: `linear-gradient(90deg, transparent, ${ACCENT}, transparent)`, borderRadius: "24px 24px 0 0" }} />
+
+      {/* Header */}
+      <div style={{ padding: "28px 28px 0" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+          <div>
+            <span style={{ color: "#555", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em" }}>Portfolio groei</span>
+            <div style={{
+              color: "#fff", fontSize: "2rem", fontWeight: 800, letterSpacing: "-0.03em", marginTop: 4,
+              transition: "all 0.4s",
+            }}>
+              {chart.pct}
+            </div>
+          </div>
+          <div style={{
+            display: "flex", alignItems: "center", gap: 6,
+            background: `${chart.labelColor}15`, borderRadius: 100, padding: "6px 14px",
+            transition: "all 0.4s",
+          }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: chart.labelColor }} />
+            <span style={{ color: chart.labelColor, fontSize: "0.68rem", fontWeight: 600, whiteSpace: "nowrap", transition: "color 0.4s" }}>{chart.label}</span>
+          </div>
+        </div>
+
+        {/* Strategy toggles */}
+        <div style={{ display: "flex", gap: 8, marginTop: 16, marginBottom: 16 }}>
+          {STRATEGIES.map((s) => {
+            const isActive = active.has(s.id)
+            return (
+              <button
+                key={s.id}
+                onClick={() => toggleStrategy(s.id)}
+                style={{
+                  flex: 1,
+                  padding: "10px 8px",
+                  borderRadius: 10,
+                  border: `1px solid ${isActive ? s.color + "50" : "#1a1a1a"}`,
+                  background: isActive ? s.color + "12" : "#0a0a0a",
+                  cursor: "pointer",
+                  transition: "all 0.3s",
+                  display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+                }}
+              >
+                <span style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  background: isActive ? s.color : "#333",
+                  transition: "all 0.3s",
+                  boxShadow: isActive ? `0 0 8px ${s.color}50` : "none",
+                }} />
+                <span style={{
+                  color: isActive ? s.color : "#555",
+                  fontSize: "0.72rem", fontWeight: 600,
+                  transition: "color 0.3s",
+                }}>{s.name}</span>
+              </button>
+            )
+          })}
+        </div>
+        <p style={{ color: "#333", fontSize: "0.7rem", textAlign: "center", marginBottom: 12 }}>
+          Klik om strategieën toe te voegen of te verwijderen
+        </p>
+      </div>
+
+      {/* Chart */}
+      <div style={{ padding: "0 8px 0 0", position: "relative" }}>
+        <svg key={animKey} viewBox="0 0 510 200" style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}>
+          <defs>
+            <linearGradient id="cFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={ACCENT} stopOpacity="0.2"/>
+              <stop offset="50%" stopColor={ACCENT} stopOpacity="0.05"/>
+              <stop offset="100%" stopColor={ACCENT} stopOpacity="0"/>
+            </linearGradient>
+            <linearGradient id="cStroke" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor={ACCENT} stopOpacity="0.2"/>
+              <stop offset="40%" stopColor={ACCENT} stopOpacity="0.6"/>
+              <stop offset="100%" stopColor={ACCENT} stopOpacity="1"/>
+            </linearGradient>
+            <filter id="gl">
+              <feGaussianBlur stdDeviation="3" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="dg">
+              <feGaussianBlur stdDeviation="6" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          {/* Grid lines */}
+          {[50, 100, 150].map(y => (
+            <line key={y} x1="20" y1={y} x2="490" y2={y} stroke="#1a1a1a" strokeWidth="0.5" strokeDasharray="4 6"/>
+          ))}
+
+          {/* Fill */}
+          <path d={chart.fill} fill="url(#cFill)" style={{ transition: "d 0.8s cubic-bezier(.23,1,.32,1)" }}>
+            <animate attributeName="opacity" from="0" to="1" dur="1s" fill="freeze"/>
+          </path>
+
+          {/* Line */}
+          <path
+            d={chart.line}
+            fill="none" stroke="url(#cStroke)" strokeWidth="2.5" strokeLinecap="round"
+            filter="url(#gl)"
+            strokeDasharray="1200"
+            strokeDashoffset="1200"
+            style={{ transition: "d 0.8s cubic-bezier(.23,1,.32,1)" }}
+          >
+            <animate attributeName="stroke-dashoffset" from="1200" to="0" dur="3s" fill="freeze" calcMode="spline" keySplines="0.23 1 0.32 1"/>
+          </path>
+
+          {/* End pulse dot */}
+          <circle cx="490" cy={chart.endY} r="14" fill={ACCENT} opacity="0.12">
+            <animate attributeName="r" values="14;22;14" dur="2.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.12;0.04;0.12" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="490" cy={chart.endY} r="6" fill={ACCENT} opacity="0.2">
+            <animate attributeName="r" values="6;10;6" dur="2.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.2;0.08;0.2" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="490" cy={chart.endY} r="4" fill={ACCENT} filter="url(#dg)"/>
+
+          {/* Month labels */}
+          {[
+            {x:20,l:"Jan"},{x:78,l:"Feb"},{x:137,l:"Mrt"},{x:196,l:"Apr"},
+            {x:255,l:"Mei"},{x:313,l:"Jun"},{x:372,l:"Jul"},{x:431,l:"Aug"},{x:490,l:"Sep"},
+          ].map((m,i) => (
+            <text key={i} x={m.x} y="198" fill="#2a2a2a" fontSize="7.5" fontFamily="sans-serif" textAnchor="middle">{m.l}</text>
+          ))}
+        </svg>
+      </div>
+
+      {/* Bottom stats */}
+      <div style={{
+        display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 0,
+        margin: "0 24px", borderTop: "1px solid #151515",
+      }}>
+        {[
+          { label: "Rendement", val: chart.pct, color: count === 3 ? "#4caf50" : count === 2 ? "#A78BFA" : "#ff9800" },
+          { label: "Strategieën", val: `${count}/3`, color: count === 3 ? ACCENT : "#555" },
+          { label: "Stabiliteit", val: count === 3 ? "Hoog" : count === 2 ? "Gemiddeld" : "Laag", color: count === 3 ? "#4caf50" : count === 2 ? "#ff9800" : "#ef4444" },
+        ].map((m, i) => (
+          <div key={i} style={{
+            textAlign: "center", padding: "18px 8px",
+            borderRight: i < 2 ? "1px solid #151515" : "none",
+          }}>
+            <div style={{ color: m.color, fontWeight: 700, fontSize: "1rem", marginBottom: 3, transition: "all 0.4s" }}>{m.val}</div>
+            <div style={{ color: "#444", fontSize: "0.68rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.06em" }}>{m.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ height: 20 }} />
+    </div>
+  )
+}
+
+
 /* ════════════════════════════════════════════════════ */
 /*  HOMEPAGE                                            */
 /* ════════════════════════════════════════════════════ */
@@ -309,7 +528,7 @@ export default function HomePage() {
   return (
     <div style={{ overflowX: "hidden" }}>
       <style>{`
-        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .hero-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 48px; align-items: center; }
         .metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .strategy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
@@ -404,127 +623,7 @@ export default function HomePage() {
             </div>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <div style={{
-                width: "100%", maxWidth: 440, background: "linear-gradient(170deg, #0d0d0d 0%, #080808 100%)",
-                border: "1px solid #1a1a1a", borderRadius: 24, padding: "0", position: "relative",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(137,251,246,0.04)",
-              }}>
-                {/* Top accent line */}
-                <div style={{ height: 2, background: `linear-gradient(90deg, transparent, ${ACCENT}, transparent)`, borderRadius: "24px 24px 0 0" }} />
-                
-                <div style={{ padding: "32px 32px 0" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-                    <div>
-                      <span style={{ color: "#555", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em" }}>Portfolio groei</span>
-                      <div style={{ color: "#fff", fontSize: "2rem", fontWeight: 800, letterSpacing: "-0.03em", marginTop: 4 }}>+87.4%</div>
-                    </div>
-                    <div style={{
-                      display: "flex", alignItems: "center", gap: 6,
-                      background: "rgba(76,175,80,0.12)", borderRadius: 100, padding: "6px 14px",
-                    }}>
-                      <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4caf50" }} />
-                      <span style={{ color: "#4caf50", fontSize: "0.72rem", fontWeight: 600 }}>LIVE</span>
-                    </div>
-                  </div>
-                  <p style={{ color: "#444", fontSize: "0.78rem", marginBottom: 20 }}>Cumulatief rendement sinds start</p>
-                </div>
-
-                {/* Chart area — extra padding right for pulse dot */}
-                <div style={{ padding: "0 12px 0 0", position: "relative" }}>
-                  <svg viewBox="0 0 400 180" style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}>
-                    <defs>
-                      <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor={ACCENT} stopOpacity="0.25"/>
-                        <stop offset="40%" stopColor={ACCENT} stopOpacity="0.08"/>
-                        <stop offset="100%" stopColor={ACCENT} stopOpacity="0"/>
-                      </linearGradient>
-                      <linearGradient id="chartStroke" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stopColor={ACCENT} stopOpacity="0.3"/>
-                        <stop offset="50%" stopColor={ACCENT} stopOpacity="0.7"/>
-                        <stop offset="100%" stopColor={ACCENT} stopOpacity="1"/>
-                      </linearGradient>
-                      <filter id="glow">
-                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                        <feMerge>
-                          <feMergeNode in="coloredBlur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      <filter id="dotGlow">
-                        <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
-                        <feMerge>
-                          <feMergeNode in="coloredBlur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                    </defs>
-
-                    {/* Subtle horizontal grid lines */}
-                    {[45, 90, 135].map(y => (
-                      <line key={y} x1="20" y1={y} x2="380" y2={y} stroke="#1a1a1a" strokeWidth="0.5" strokeDasharray="4 6"/>
-                    ))}
-
-                    {/* Fill area */}
-                    <path
-                      d="M20,155 C45,152 60,148 80,142 C100,136 115,128 135,118 C155,108 165,112 180,102 C195,92 210,88 230,75 C250,62 260,68 280,55 C300,42 315,38 335,28 C350,20 365,16 380,12 L380,170 L20,170Z"
-                      fill="url(#chartFill)"
-                    />
-                    
-                    {/* Main chart line with glow */}
-                    <path
-                      d="M20,155 C45,152 60,148 80,142 C100,136 115,128 135,118 C155,108 165,112 180,102 C195,92 210,88 230,75 C250,62 260,68 280,55 C300,42 315,38 335,28 C350,20 365,16 380,12"
-                      fill="none"
-                      stroke="url(#chartStroke)"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      filter="url(#glow)"
-                      className="chart-line-draw"
-                    />
-
-                    {/* Data points on key positions */}
-                    {[
-                      {x:80,y:142}, {x:135,y:118}, {x:230,y:75}, {x:335,y:28}
-                    ].map((p,i) => (
-                      <circle key={i} cx={p.x} cy={p.y} r="2.5" fill={ACCENT} opacity="0.4"/>
-                    ))}
-
-                    {/* Pulse dot at end — proper size and animation */}
-                    <circle cx="380" cy="12" r="12" fill={ACCENT} opacity="0.15" className="chart-pulse-ring"/>
-                    <circle cx="380" cy="12" r="6" fill={ACCENT} opacity="0.25" className="chart-pulse-ring-inner"/>
-                    <circle cx="380" cy="12" r="4" fill={ACCENT} filter="url(#dotGlow)"/>
-
-                    {/* Month labels */}
-                    {[
-                      {x:20, label:"Jan"}, {x:92, label:"Mrt"}, {x:164, label:"Mei"},
-                      {x:236, label:"Jul"}, {x:308, label:"Sep"}, {x:380, label:"Nov"}
-                    ].map((m,i) => (
-                      <text key={i} x={m.x} y="168" fill="#333" fontSize="8" fontFamily="sans-serif" textAnchor="middle">{m.label}</text>
-                    ))}
-                  </svg>
-                </div>
-
-                {/* Bottom stats */}
-                <div style={{
-                  display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 0,
-                  margin: "0 24px", borderTop: "1px solid #151515",
-                }}>
-                  {[
-                    { label: "Winrate", val: "~87%", color: ACCENT },
-                    { label: "Strategieën", val: "3", color: "#A78BFA" },
-                    { label: "Drawdown", val: "Beheerst", color: "#4caf50" },
-                  ].map((m, i) => (
-                    <div key={i} style={{
-                      textAlign: "center", padding: "20px 8px",
-                      borderRight: i < 2 ? "1px solid #151515" : "none",
-                    }}>
-                      <div style={{ color: m.color, fontWeight: 700, fontSize: "1.05rem", marginBottom: 4 }}>{m.val}</div>
-                      <div style={{ color: "#444", fontSize: "0.7rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.06em" }}>{m.label}</div>
-                    </div>
-                  ))}
-                </div>
-                
-                <div style={{ height: 24 }} />
-              </div>
+              <HeroChart />
             </div>
           </div>
         </div>
