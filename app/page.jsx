@@ -473,7 +473,7 @@ export default function HomePage() {
                 <Bullet>Portfolio-gebaseerde aanpak</Bullet>
               </div>
 
-              <div className="cta-buttons">
+              <div className="btn-glass">
                 <Btn primary href="#performance">Bekijk performance</Btn>
                 <Btn href="/hoe-het-werkt">Hoe het werkt →</Btn>
               </div>
