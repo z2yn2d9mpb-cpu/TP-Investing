@@ -9,11 +9,57 @@ html {
 }
 
 body {
-  background: #000;
+  background-color: #080808;
+  background-image:
+    /* Rechter-rand highlight per balk */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent calc(12.5% - 1px),
+      rgba(220, 220, 220, 0.13) calc(12.5% - 1px),
+      rgba(220, 220, 220, 0.13) 12.5%
+    ),
+    /* Linker schaduw per balk voor diepte */
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.35) 0%,
+      transparent 4%,
+      transparent 12.5%
+    ),
+    /* Donker-naar-licht gradiënt per balk */
+    repeating-linear-gradient(
+      90deg,
+      #0a0a0a 0%,
+      #0d0d0d 50%,
+      #1e1e1e 100%
+    );
+  background-size: 12.5% 100%;
+  background-repeat: repeat-x;
+  /* Subtiele teal glow in het midden */
+  position: relative;
   color: #fff;
   font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Bovenste sheen + teal atmosferische glow */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 25% at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 100%),
+    radial-gradient(ellipse 50% 35% at 50% 35%, rgba(137, 251, 246, 0.025) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Zorg dat content altijd boven de pseudo-elementen staat */
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 ::selection {
