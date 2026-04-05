@@ -473,7 +473,7 @@ export default function HomePage() {
                 <Bullet>Portfolio-gebaseerde aanpak</Bullet>
               </div>
 
-             <div className="flex gap-3">
+             <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
   <Btn glass primary href="#performance">Bekijk performance</Btn>
   <Btn glass href="/hoe-het-werkt">Hoe het werkt →</Btn>
 </div>
@@ -735,9 +735,9 @@ export default function HomePage() {
             Ontdek onze performance of begin direct.
           </p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
-            <Btn primary href="#performance">Bekijk performance</Btn>
-            <Btn href="/hoe-het-werkt">Start nu →</Btn>
-          </div>
+  <Btn glass primary href="#performance">Bekijk performance</Btn>
+  <Btn glass href="/hoe-het-werkt">Start nu →</Btn>
+</div>
         </div>
       </Section>
 
