@@ -20,8 +20,8 @@ export default function Btn({ children, primary, glass, href = "#", onClick, sty
     outline: "none",
     transition: "all 0.2s ease",
     transform: hovered ? "translateY(-1px)" : "translateY(0)",
-    userSelect: "none" as const,
-    position: "relative" as const,
+    userSelect: "none",
+    position: "relative",
     backdropFilter: "blur(24px) saturate(1.4)",
     WebkitBackdropFilter: "blur(24px) saturate(1.4)",
     ...(primary
