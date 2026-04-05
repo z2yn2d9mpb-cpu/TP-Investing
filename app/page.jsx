@@ -488,7 +488,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ POSITIONERING ═══════ */}
+{/* ═══════ POSITIONERING ═══════ */}
       <Section id="positioning" style={{ padding: "100px 24px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div className="two-col">
@@ -500,20 +500,64 @@ export default function HomePage() {
                 Wij werken met één doel: kapitaal laten groeien met gecontroleerd risico.
               </p>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-              {[
-                { icon: "✕", text: "Geen signalen" },
-                { icon: "✕", text: "Geen hype" },
-                { icon: "✕", text: "Geen shortcuts" },
-              ].map((item, i) => (
-                <div key={i} style={{
-                  display: "flex", alignItems: "center", gap: 16,
-                  background: "#0a0a0a", border: "1px solid #1a1a1a", borderRadius: 12, padding: "20px 24px",
-                }}>
-                  <span style={{ color: "#ff4444", fontWeight: 700, fontSize: "1.1rem" }}>{item.icon}</span>
-                  <span style={{ color: "#ccc", fontSize: "1rem", fontWeight: 500 }}>{item.text}</span>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {/* Negatief blok */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {[
+                  { icon: "✕", text: "Geen signalen" },
+                  { icon: "✕", text: "Geen hype" },
+                  { icon: "✕", text: "Geen shortcuts" },
+                ].map((item, i) => (
+                  <div key={i} style={{
+                    display: "flex", alignItems: "center", gap: 16,
+                    background: "#0a0a0a", border: "1px solid #1a1a1a", borderRadius: 12, padding: "20px 24px",
+                  }}>
+                    <span style={{ color: "#ff4444", fontWeight: 700, fontSize: "1.1rem" }}>{item.icon}</span>
+                    <span style={{ color: "#ccc", fontSize: "1rem", fontWeight: 500 }}>{item.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pijl */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "4px 0" }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                  <div style={{ width: 1, height: 16, background: "linear-gradient(180deg, #222, #89FBF6)" }} />
+                  <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                    <path d="M1 1L6 7L11 1" stroke="#89FBF6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </div>
-              ))}
+              </div>
+
+              {/* Positief blok */}
+              <div style={{
+                background: "rgba(137,251,246,0.04)",
+                border: "1px solid rgba(137,251,246,0.18)",
+                borderRadius: 12, padding: "24px",
+                display: "flex", flexDirection: "column", gap: 14,
+              }}>
+                <span style={{ color: ACCENT, fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                  Wél
+                </span>
+                {[
+                  { text: "Gestructureerde strategie" },
+                  { text: "Gecontroleerd risicomanagement" },
+                  { text: "Consistente, duurzame groei" },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                    <span style={{
+                      width: 22, height: 22, borderRadius: "50%",
+                      background: "rgba(137,251,246,0.1)",
+                      display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                    }}>
+                      <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                        <path d="M2.5 6L5 8.5L9.5 3.5" stroke="#89FBF6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                    <span style={{ color: "#fff", fontSize: "0.95rem", fontWeight: 500 }}>{item.text}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
