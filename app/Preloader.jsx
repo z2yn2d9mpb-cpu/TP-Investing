@@ -43,7 +43,7 @@ export default function Preloader() {
       }}
     >
       <img
-        src="/logo-zwart.svg"
+        src="/logo-wit.svg"
         alt="TrustedPips"
         style={{
           width: 100,
