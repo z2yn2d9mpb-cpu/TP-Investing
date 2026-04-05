@@ -68,7 +68,7 @@ export default function Nav() {
                 {l.label}
               </a>
             ))}
-            <Btn primary href={ctaHref} style={{ padding: "10px 24px", fontSize: "0.85rem" }}>Start nu</Btn>
+            <Btn glass primary href={ctaHref} style={{ padding: "10px 24px", fontSize: "0.85rem" }}>Start nu</Btn>
           </div>
 
           <button className="nav-mobile-btn" onClick={() => setMobileOpen(!mobileOpen)}
@@ -103,7 +103,7 @@ export default function Nav() {
               {l.label}
             </a>
           ))}
-          <Btn primary href={ctaHref} style={{ marginTop: 16 }}>Start nu</Btn>
+          <Btn glass primary href={ctaHref} style={{ marginTop: 16 }}>Start nu</Btn>
         </div>
       )}
     </>
