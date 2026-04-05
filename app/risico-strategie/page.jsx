@@ -439,7 +439,7 @@ export default function RisicoStrategiePage() {
                 </p>
               </div>
               <div style={{ marginTop: 20 }}>
-                <Btn href="/hoe-het-werkt" style={{ fontSize: "0.85rem", padding: "10px 20px" }}>Bekijk hoe het werkt →</Btn>
+                <Btn glass href="/hoe-het-werkt" style={{ fontSize: "0.85rem", padding: "10px 20px" }}>Bekijk hoe het werkt →</Btn>
               </div>
             </div>
           </div>
@@ -502,8 +502,8 @@ export default function RisicoStrategiePage() {
             Bekijk onze performance of begin vandaag nog.
           </p>
           <div className="cta-buttons" style={{ position: "relative" }}>
-            <Btn primary href="/#performance">Bekijk performance</Btn>
-            <Btn href="/hoe-het-werkt">Start met TrustedPips →</Btn>
+            <Btn glass primary href="/#performance">Bekijk performance</Btn>
+            <Btn glass href="/hoe-het-werkt">Start met TrustedPips →</Btn>
           </div>
         </div>
       </Section>
