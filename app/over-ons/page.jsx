@@ -376,8 +376,8 @@ export default function OverOnsPage() {
             Bekijk hoe het werkt of ontdek onze strategieën.
           </p>
           <div className="cta-buttons" style={{ position: "relative" }}>
-            <Btn primary href="/hoe-het-werkt">Hoe het werkt</Btn>
-            <Btn href="/risico-strategie">Risico & Strategie →</Btn>
+            <Btn glass primary href="/hoe-het-werkt">Hoe het werkt</Btn>
+            <Btn glass href="/risico-strategie">Risico & Strategie →</Btn>
           </div>
         </div>
       </Section>
