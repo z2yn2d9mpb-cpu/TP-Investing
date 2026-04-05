@@ -467,21 +467,24 @@ export default function HomePage() {
                 TrustedPips is ontworpen om kapitaal te laten groeien via gestructureerd traden, risicomanagement en portfolio-gebaseerde strategieën.
               </p>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 40 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 40 }}>
                 <Bullet>Maandelijkse performance tracking</Bullet>
                 <Bullet>Gecontroleerde drawdown</Bullet>
                 <Bullet>Portfolio-gebaseerde aanpak</Bullet>
               </div>
 
-             <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-  <Btn glass primary href="#performance">Bekijk performance</Btn>
-  <Btn glass href="/hoe-het-werkt">Hoe het werkt →</Btn>
-</div>
+              <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+                <Btn glass primary href="#performance">Bekijk performance</Btn>
+                <Btn glass href="/hoe-het-werkt">Hoe het werkt →</Btn>
+              </div>
+
+            </div> {/* sluit linker hero-grid kolom */}
 
             <div style={{ display: "flex", justifyContent: "center" }}>
               <HeroChart />
             </div>
-          </div>
+
+          </div> {/* sluit hero-grid */}
         </div>
       </section>
 
