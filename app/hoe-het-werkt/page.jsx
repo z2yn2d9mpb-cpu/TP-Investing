@@ -204,7 +204,7 @@ export default function HoeHetWerktPage() {
             In een paar stappen koppel je jouw account aan ons systeem en loopt jouw kapitaal automatisch mee binnen onze strategieën.
           </p>
 
-          <Btn primary href="#stappen">Bekijk de stappen ↓</Btn>
+          <Btn glass primary href="#stappen">Bekijk de stappen ↓</Btn>
         </div>
       </section>
 
@@ -444,8 +444,8 @@ export default function HoeHetWerktPage() {
             Open een account en begin vandaag nog.
           </p>
           <div className="cta-buttons" style={{ position: "relative" }}>
-            <Btn primary href="#">Open een account</Btn>
-            <Btn href="/#performance">Bekijk performance</Btn>
+            <Btn glass primary href="#">Open een account</Btn>
+            <Btn glass href="/#performance">Bekijk performance</Btn>
           </div>
         </div>
       </Section>
