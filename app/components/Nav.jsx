@@ -28,11 +28,7 @@ export default function Nav() {
     setMobileOpen(false)
   }, [pathname])
 
-  // Filter out current page from links
-  const links = allLinks.filter((l) => {
-    if (l.href === "/") return pathname !== "/"
-    return !pathname.startsWith(l.href)
-  })
+  const links = allLinks
 
   // Determine CTA href based on current page
   const ctaHref = pathname === "/hoe-het-werkt" ? "#stappen" : "/hoe-het-werkt"
