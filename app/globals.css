@@ -1,7 +1,81 @@
 /* ============================================
-   TrustedPips — Glass Button Styles
-   Gebruik: voeg toe aan je globals.css of
-   importeer als losse module
+   TrustedPips — Global Styles
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: #fff;
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  position: relative;
+
+  /* Metallic bars — 8 balken over volledige breedte, geen repeat */
+  background-color: #080808;
+  background-image:
+    /* Rechter-rand highlight per balk */
+    repeating-linear-gradient(
+      90deg,
+      rgba(220, 220, 220, 0.12) 0px,
+      rgba(220, 220, 220, 0.12) 1px,
+      transparent 1px,
+      transparent 12.5%
+    ),
+    /* Linker schaduw per balk voor diepte */
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      transparent 3%,
+      transparent 12.5%
+    ),
+    /* Donker-naar-licht gradiënt per balk */
+    repeating-linear-gradient(
+      90deg,
+      #0a0a0a 0%,
+      #0d0d0d 50%,
+      #1e1e1e 100%
+    );
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Bovenste sheen + subtiele teal atmosferische glow */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 25% at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 100%),
+    radial-gradient(ellipse 50% 35% at 50% 35%, rgba(137, 251, 246, 0.025) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Zorg dat alle directe children boven de pseudo-laag staan */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+::selection {
+  background: #89FBF6;
+  color: #000;
+}
+
+
+/* ============================================
+   Glass Buttons
    ============================================ */
 
 .btn-glass {
