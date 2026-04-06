@@ -385,10 +385,11 @@ const PERF_DATA = {
   grid:    [{ r: 1.8, d: -0.6 }, { r: 1.5, d: -0.4 }, { r: 1.9, d: -0.8 }, { r: 2.0, d: -0.5 }, { r: 1.4, d: -0.7 }, { r: 1.7, d: -0.3 }, { r: 2.2, d: -0.9 }, { r: 1.6, d: -0.5 }, { r: 1.8, d: -0.4 }],
   manueel: [{ r: 0.9, d: -0.3 }, { r: 1.0, d: -0.2 }, { r: 0.4, d: -0.5 }, { r: 0.9, d: -0.1 }, { r: 0.9, d: -0.4 }, { r: 1.2, d: -0.2 }, { r: 0.6, d: -0.3 }, { r: 1.1, d: -0.2 }, { r: 0.8, d: -0.1 }],
 }
-const PERF_MONTHS = ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September"]
+const PERF_MONTHS = ["Januari", "Februari", "Maart", "April", "Mei"]
 
 function PerformanceTable() {
   const [active, setActive] = useState(new Set([1, 2, 3]))
+  const [showInfo, setShowInfo] = useState(false)
 
   const toggleStrategy = (id) => {
     setActive(prev => {
@@ -537,7 +538,40 @@ function PerformanceTable() {
         ))}
       </div>
 
-      <div style={{ height: 20 }} />
+      {/* Info dropdown */}
+      <div style={{ margin: "0 24px", borderTop: "1px solid #151515" }}>
+        <button onClick={() => setShowInfo(!showInfo)} style={{
+          width: "100%", background: "none", border: "none", cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          padding: "16px 0", color: "#555", fontSize: "0.78rem", fontWeight: 500,
+        }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+            <circle cx="7" cy="7" r="6" stroke="#555" strokeWidth="1.2"/>
+            <text x="7" y="10.5" fill="#555" fontSize="9" fontFamily="sans-serif" textAnchor="middle" fontWeight="600">i</text>
+          </svg>
+          Wat betekenen deze begrippen?
+          <span style={{ transition: "transform 0.3s", transform: showInfo ? "rotate(180deg)" : "rotate(0deg)", fontSize: "0.7rem" }}>▼</span>
+        </button>
+        <div style={{
+          maxHeight: showInfo ? 400 : 0, overflow: "hidden",
+          transition: "max-height 0.5s cubic-bezier(.23,1,.32,1)",
+        }}>
+          <div style={{ padding: "0 4px 20px", display: "flex", flexDirection: "column", gap: 16 }}>
+            {[
+              { term: "Rendement", explain: "Het percentage winst dat in een bepaalde maand is behaald op het totale kapitaal." },
+              { term: "Drawdown", explain: "De maximale daling van het account vanaf een piek. Dit laat zien hoeveel risico er is genomen om het rendement te behalen." },
+              { term: "Cumulatief", explain: "Het opgetelde rendement over alle maanden samen. Dit toont de totale groei van het portfolio over de getoonde periode." },
+            ].map((item, i) => (
+              <div key={i}>
+                <span style={{ color: ACCENT, fontSize: "0.8rem", fontWeight: 600 }}>{item.term}</span>
+                <p style={{ color: "#777", fontSize: "0.82rem", lineHeight: 1.6, marginTop: 4 }}>{item.explain}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ height: 8 }} />
     </div>
   )
 }
@@ -629,7 +663,7 @@ export default function HomePage() {
               </h1>
 
               <p style={{ color: "#999", fontSize: "1.1rem", lineHeight: 1.7, marginBottom: 36, maxWidth: 520 }}>
-                TrustedPips is ontworpen om kapitaal te laten groeien via gestructureerd traden, risicomanagement en portfolio-gebaseerde strategieën.
+                TP-Investing is ontworpen om kapitaal te laten groeien via gestructureerd traden, risicomanagement en portfolio-gebaseerde strategieën.
               </p>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 40 }}>
@@ -659,7 +693,7 @@ export default function HomePage() {
           <div className="two-col">
             <div>
               <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", fontWeight: 800, lineHeight: 1.15, letterSpacing: "-0.02em", marginBottom: 28 }}>
-                TrustedPips is <span style={{ color: ACCENT }}>anders opgebouwd.</span>
+                TP-Investing is <span style={{ color: ACCENT }}>anders opgebouwd.</span>
               </h2>
               <p style={{ color: "#999", fontSize: "1.05rem", lineHeight: 1.7 }}>
                 Wij werken met één doel: kapitaal laten groeien met gecontroleerd risico.
@@ -753,6 +787,12 @@ export default function HomePage() {
             <p style={{ color: "#999", fontSize: "1.05rem", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
               Bekijk het maandelijkse rendement per strategie-combinatie. Schakel strategieën aan of uit om het effect op rendement en drawdown te zien.
             </p>
+          </div>
+
+          <div className="metric-grid" style={{ marginBottom: 48 }}>
+            <MetricBlock label="Maandelijkse rendementen" value="~5%" sub="Wij focussen op consistentie, niet op uitschieters." delay={0}/>
+            <MetricBlock label="Drawdown" value="Beheerst" sub="Risico wordt beheerst voordat rendement wordt opgeschaald." delay={100}/>
+            <MetricBlock label="Risk metrics" value="Gestructureerd" sub="Elke positie wordt genomen binnen een gestructureerd risicomodel." delay={200}/>
           </div>
 
           <PerformanceTable />
