@@ -218,7 +218,7 @@ export default function RisicoStrategiePage() {
             color: "#999", fontSize: "1.15rem", lineHeight: 1.7,
             maxWidth: 600, margin: "0 auto",
           }}>
-            TrustedPips is gebouwd rondom één principe: kapitaal laten groeien via structuur, risicobeheer en strategische allocatie.
+            TP-Investing is gebouwd rondom één principe: kapitaal laten groeien via structuur, risicobeheer en strategische allocatie.
           </p>
         </div>
       </section>
@@ -451,7 +451,7 @@ export default function RisicoStrategiePage() {
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, letterSpacing: "-0.02em" }}>
-              Wat TrustedPips <span style={{ color: ACCENT }}>anders maakt</span>
+              Wat TP-Investing <span style={{ color: ACCENT }}>anders maakt</span>
             </h2>
           </div>
           <div className="summary-grid">
@@ -503,7 +503,7 @@ export default function RisicoStrategiePage() {
           </p>
           <div className="cta-buttons" style={{ position: "relative" }}>
             <Btn glass primary href="/#performance">Bekijk performance</Btn>
-            <Btn glass href="/hoe-het-werkt">Start met TrustedPips →</Btn>
+            <Btn glass href="/hoe-het-werkt">Start met TP-Investing →</Btn>
           </div>
         </div>
       </Section>
