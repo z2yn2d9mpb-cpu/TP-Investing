@@ -38,8 +38,8 @@ export default function Preloader() {
         src="/Logo wit zwart achtergrond.svg"
         alt="TP-Investing"
         style={{
-          width: 100,
-          height: 100,
+          width: 160,
+          height: 160,
           objectFit: "contain",
           opacity: phase === "enter" ? 0 : 1,
           transform:
