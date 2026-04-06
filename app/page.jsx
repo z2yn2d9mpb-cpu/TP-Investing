@@ -86,17 +86,18 @@ function FaqItem({ q, a }) {
   )
 }
 
-/* ─── Strategy Card ─── */
-function StrategyCard({ num, title, subtitle, desc, points, color, delay = 0 }) {
+/* ─── Strategy Card (expanded with glow border) ─── */
+function StrategyCard({ num, title, subtitle, tagline, desc, details, points, color, delay = 0 }) {
   const [ref, visible] = useInView(0.15)
+  const [expanded, setExpanded] = useState(false)
+  const glowId = `glow-${num}`
   return (
     <div
       ref={ref}
       style={{
-        background: "#111",
-        border: "1px solid #1a1a1a",
-        borderRadius: 16,
-        padding: "36px 32px",
+        background: "#0a0a0a",
+        borderRadius: 20,
+        padding: 1,
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(30px)",
         transition: `opacity 0.7s ${delay}ms cubic-bezier(.23,1,.32,1), transform 0.7s ${delay}ms cubic-bezier(.23,1,.32,1)`,
@@ -104,30 +105,86 @@ function StrategyCard({ num, title, subtitle, desc, points, color, delay = 0 }) 
         overflow: "hidden",
       }}
     >
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: color }} />
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-        <span
-          style={{
-            width: 36, height: 36, borderRadius: "50%", background: color,
+      {/* Animated glow border */}
+      <style>{`
+        @keyframes ${glowId} {
+          0%, 100% { opacity: 0.25; }
+          50% { opacity: 0.6; }
+        }
+      `}</style>
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: 20, padding: 1, pointerEvents: "none",
+        background: `linear-gradient(135deg, ${color}30, transparent 40%, transparent 60%, ${color}20)`,
+        animation: `${glowId} 4s ease-in-out infinite`,
+        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+        WebkitMaskComposite: "xor",
+        maskComposite: "exclude",
+      }} />
+      <div style={{
+        position: "absolute", top: -60, right: -60, width: 180, height: 180, borderRadius: "50%",
+        background: `radial-gradient(circle, ${color}08 0%, transparent 70%)`,
+        filter: "blur(40px)", pointerEvents: "none",
+      }} />
+
+      <div style={{ background: "#0a0a0a", borderRadius: 19, padding: "40px 32px", position: "relative" }}>
+        {/* Top accent line */}
+        <div style={{ position: "absolute", top: 0, left: 32, right: 32, height: 1, background: `linear-gradient(90deg, transparent, ${color}40, transparent)` }} />
+
+        {/* Header */}
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
+          <span style={{
+            width: 42, height: 42, borderRadius: 12, background: `${color}15`, border: `1px solid ${color}25`,
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "0.85rem", fontWeight: 700, color: "#000",
-          }}
-        >
-          {num}
-        </span>
-        <div>
-          <div style={{ fontWeight: 600, color: "#fff", fontSize: "1.05rem" }}>{title}</div>
-          <div style={{ color: "#666", fontSize: "0.8rem", marginTop: 2 }}>{subtitle}</div>
-        </div>
-      </div>
-      <p style={{ color: "#aaa", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: 20 }}>{desc}</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        {points.map((p, i) => (
-          <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ color, fontSize: "0.7rem" }}>●</span>
-            <span style={{ color: "#ccc", fontSize: "0.85rem" }}>{p}</span>
+            fontSize: "0.9rem", fontWeight: 700, color: color,
+          }}>
+            {num}
+          </span>
+          <div>
+            <div style={{ fontWeight: 700, color: "#fff", fontSize: "1.15rem" }}>{title}</div>
+            <div style={{ color: "#666", fontSize: "0.78rem", marginTop: 2 }}>{subtitle}</div>
           </div>
-        ))}
+        </div>
+
+        {/* Tagline */}
+        <p style={{ color, fontSize: "0.85rem", fontWeight: 500, marginBottom: 6, marginTop: 16 }}>{tagline}</p>
+
+        {/* Description */}
+        <p style={{ color: "#999", fontSize: "0.9rem", lineHeight: 1.75, marginBottom: 24 }}>{desc}</p>
+
+        {/* Key points */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
+          {points.map((p, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <span style={{
+                width: 6, height: 6, borderRadius: "50%", background: color,
+                boxShadow: `0 0 8px ${color}40`, flexShrink: 0,
+              }} />
+              <span style={{ color: "#ddd", fontSize: "0.88rem", fontWeight: 500 }}>{p}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Expand toggle */}
+        <button onClick={() => setExpanded(!expanded)} style={{
+          background: `${color}08`, border: `1px solid ${color}18`, borderRadius: 10,
+          padding: "10px 18px", cursor: "pointer", width: "100%",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          color: color, fontSize: "0.78rem", fontWeight: 600,
+          transition: "all 0.3s",
+        }}>
+          {expanded ? "Minder tonen" : "Meer over deze strategie"}
+          <span style={{ transition: "transform 0.3s", transform: expanded ? "rotate(180deg)" : "rotate(0deg)", fontSize: "0.65rem" }}>▼</span>
+        </button>
+
+        {/* Expandable details */}
+        <div style={{
+          maxHeight: expanded ? 600 : 0, overflow: "hidden",
+          transition: "max-height 0.6s cubic-bezier(.23,1,.32,1)",
+        }}>
+          <div style={{ paddingTop: 20, borderTop: `1px solid ${color}12`, marginTop: 16 }}>
+            <p style={{ color: "#888", fontSize: "0.88rem", lineHeight: 1.8 }}>{details}</p>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -814,15 +871,21 @@ export default function HomePage() {
 
           <div className="strategy-grid">
             <StrategyCard num="1" title="Scalpstrategie" subtitle="Forex: Goud & Nasdaq"
-              desc="High-frequency scalpstrategie op de forexmarkt. Trades duren van seconden tot minuten met strikte risicobeheersing en een trailing stop-loss."
-              points={["~87% winrate", "Hogere risk/reward setups", "Gebaseerd op marktstructuur"]}
+              tagline="Gericht op het benutten van grotere marktbewegingen."
+              desc="High-frequency scalpstrategie actief op de forexmarkt, met focus op goud (XAUUSD) en de Nasdaq (NAS100). Trades duren van enkele seconden tot minuten, met een single-entry model en trailing stop-loss."
+              details="Instappen gebeurt op het moment dat belangrijke key levels worden doorbroken, met als uitgangspunt dat deze doorbraak leidt tot een sterke breakout-beweging. Elke trade heeft één instapmoment gecombineerd met een vooraf bepaalde stop-loss. De trailing stop-loss zorgt ervoor dat winsten efficiënt worden veiliggesteld. Historisch behaalt deze strategie een winrate van circa 87%, dankzij snelle executie, strikte risicobeheersing en dynamisch afdekken van winstposities."
+              points={["Hogere risk/reward setups", "~87% winrate", "Gebaseerd op marktstructuur"]}
               color={ACCENT} delay={0}/>
             <StrategyCard num="2" title="Gridstrategie" subtitle="Goudmarkt — Intraday"
-              desc="Agressieve gridstrategie gericht op extreme prijsbewegingen via mean reversion. Bewezen trackrecord van 2,5 jaar."
+              tagline="Gericht op kortetermijn prijsbewegingen."
+              desc="Agressieve gridstrategie specifiek gericht op de goudmarkt. Wanneer indicatoren extreme marktomstandigheden signaleren, worden posities geopend in de tegenovergestelde richting (mean reversion) via een gridstructuur."
+              details="Meerdere posities worden gefaseerd opgebouwd bij overextensies in de markt. Door systematisch in te spelen op deze bewegingen, gecombineerd met position scaling, worden consistente rendementen gegenereerd — ook in volatiele omstandigheden. De strategie heeft een bewezen trackrecord van 2,5 jaar en realiseert gemiddeld circa 5% rendement per maand."
               points={["~5% gemiddeld per maand", "Strakke risicocontrole", "Korte blootstelling"]}
               color="#A78BFA" delay={100}/>
             <StrategyCard num="3" title="Manuele strategie" subtitle="Selectief & gedisciplineerd"
-              desc="Gehandeld wordt uitsluitend bij duidelijke en kwalitatieve kansen. Focus op consistentie en risicobeheersing."
+              tagline="De kracht ligt in selectiviteit en discipline."
+              desc="Onze manuele strategie vormt een belangrijk onderdeel van de aanpak. Er wordt uitsluitend gehandeld wanneer de markt duidelijke en kwalitatieve kansen biedt, met focus op consistentie en risicobeheersing."
+              details="De activiteit verschilt per periode — er zijn fases met weinig setups en periodes met meerdere kansen kort achter elkaar. Gemiddeld wordt gewerkt met een winrate van circa 80%, met een target van 1RR per trade. Iedere trade wordt genomen volgens een vaste structuur, zonder impulsieve beslissingen."
               points={["~80% winrate", "1RR target per trade", "Geen impulsieve beslissingen"]}
               color="#FCD34D" delay={200}/>
           </div>
