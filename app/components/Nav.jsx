@@ -23,14 +23,11 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", h)
   }, [])
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false)
   }, [pathname])
 
   const links = allLinks
-
-  // Determine CTA href based on current page
   const ctaHref = pathname === "/hoe-het-werkt" ? "#stappen" : "/hoe-het-werkt"
 
   return (
@@ -54,8 +51,8 @@ export default function Nav() {
       }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-            <img src="/logo-wit.png" alt="TrustedPips" style={{ height: 32, width: "auto" }} />
-            <span style={{ color: "#fff", fontWeight: 700, fontSize: "1.1rem", letterSpacing: "-0.02em" }}>TrustedPips</span>
+            <img src="/Logo wit.svg" alt="TP-Investing" style={{ height: 32, width: "auto" }} />
+            <span style={{ color: "#fff", fontWeight: 700, fontSize: "1.1rem", letterSpacing: "-0.02em" }}>TP-Investing</span>
           </a>
 
           <div style={{ display: "flex", alignItems: "center", gap: 32 }} className="nav-desktop">
