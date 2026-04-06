@@ -140,7 +140,7 @@ export default function OverOnsPage() {
                   border: "1px solid #1a1a1a",
                 }}>
                   <img
-                    src="/teun.jpg"
+                    src="/teun1.jpg"
                     alt="Teun — Founder TrustedPips"
                     style={{
                       width: "100%", height: "auto",
