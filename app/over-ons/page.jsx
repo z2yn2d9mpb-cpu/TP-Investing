@@ -105,7 +105,7 @@ export default function OverOnsPage() {
             lineHeight: 1.1, letterSpacing: "-0.03em", marginBottom: 24,
           }}>
             Het gezicht achter{" "}
-            <span style={{ color: ACCENT }}>TrustedPips</span>
+            <span style={{ color: ACCENT }}>TP-Investing</span>
           </h1>
 
           <p style={{
@@ -141,7 +141,7 @@ export default function OverOnsPage() {
                 }}>
                   <img
                     src="/Teun1.jpeg"
-                    alt="Teun — Founder TrustedPips"
+                    alt="Teun — Founder TP-Investing"
                     style={{
                       width: "100%", height: "auto",
                       display: "block",
@@ -155,7 +155,7 @@ export default function OverOnsPage() {
                     padding: "40px 28px 24px",
                   }}>
                     <div style={{ fontSize: "1.3rem", fontWeight: 700, color: "#fff" }}>Teun</div>
-                    <div style={{ color: ACCENT, fontSize: "0.85rem", fontWeight: 500 }}>Founder — TrustedPips</div>
+                    <div style={{ color: ACCENT, fontSize: "0.85rem", fontWeight: 500 }}>Founder — TP-Investing</div>
                   </div>
                 </div>
               </div>
@@ -175,7 +175,7 @@ export default function OverOnsPage() {
                 Maar kapitaal groeit niet door losse trades. Kapitaal groeit door structuur.
               </p>
               <p style={{ color: "#ccc", fontSize: "0.95rem", lineHeight: 1.8, marginBottom: 28, fontWeight: 500 }}>
-                TrustedPips is opgericht vanuit die overtuiging. Niet om trades te verkopen, maar om een model te bouwen waarin lange termijn resultaat centraal staat.
+                TP-Investing is opgericht vanuit die overtuiging. Niet om trades te verkopen, maar om een model te bouwen waarin lange termijn resultaat centraal staat.
               </p>
 
               <div style={{
@@ -191,7 +191,7 @@ export default function OverOnsPage() {
         </div>
       </Section>
 
-      {/* ═══════ WAAROM TRUSTEDPIPS ═══════ */}
+      {/* ═══════ WAAROM TP-Investing ═══════ */}
       <Section style={{ padding: "0 24px 100px" }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{
@@ -202,7 +202,7 @@ export default function OverOnsPage() {
 
             <span style={{ color: ACCENT, fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", display: "block", marginBottom: 16 }}>Onze visie</span>
             <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 24, lineHeight: 1.2 }}>
-              Waarom TrustedPips is <span style={{ color: ACCENT }}>opgericht</span>
+              Waarom TP-Investing is <span style={{ color: ACCENT }}>opgericht</span>
             </h2>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -210,7 +210,7 @@ export default function OverOnsPage() {
                 De meeste traders vertrouwen op één strategie. Wanneer die strategie tijdelijk minder presteert, verdwijnt het rendement. Professionele structuren werken anders.
               </p>
               <p style={{ color: "#999", fontSize: "0.95rem", lineHeight: 1.8 }}>
-                Kapitaal wordt verdeeld over meerdere strategieën, zodat prestaties niet afhankelijk zijn van één systeem. Dat is precies hoe TrustedPips is opgebouwd — met structuur, discipline en een lange termijn visie.
+                Kapitaal wordt verdeeld over meerdere strategieën, zodat prestaties niet afhankelijk zijn van één systeem. Dat is precies hoe TP-Investing is opgebouwd — met structuur, discipline en een lange termijn visie.
               </p>
             </div>
           </div>
@@ -370,7 +370,7 @@ export default function OverOnsPage() {
             letterSpacing: "-0.02em", marginBottom: 16, position: "relative",
           }}>
             Klaar om te beginnen met{" "}
-            <span style={{ color: ACCENT }}>TrustedPips</span>?
+            <span style={{ color: ACCENT }}>TP-Investing</span>?
           </h2>
           <p style={{ color: "#888", fontSize: "1rem", marginBottom: 36, position: "relative" }}>
             Bekijk hoe het werkt of ontdek onze strategieën.
