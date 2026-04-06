@@ -378,6 +378,171 @@ function HeroChart() {
 }
 
 
+/* ─── Performance Table (mirrors Hero Chart interaction) ─── */
+const PERF_DATA = {
+  // per-strategy monthly returns and drawdowns
+  scalp:   [{ r: 2.1, d: -0.8 }, { r: 2.8, d: -0.5 }, { r: 1.4, d: -1.2 }, { r: 3.2, d: -0.6 }, { r: 1.9, d: -0.9 }, { r: 2.5, d: -0.7 }, { r: 1.1, d: -1.4 }, { r: 2.7, d: -0.4 }, { r: 2.3, d: -0.6 }],
+  grid:    [{ r: 1.8, d: -0.6 }, { r: 1.5, d: -0.4 }, { r: 1.9, d: -0.8 }, { r: 2.0, d: -0.5 }, { r: 1.4, d: -0.7 }, { r: 1.7, d: -0.3 }, { r: 2.2, d: -0.9 }, { r: 1.6, d: -0.5 }, { r: 1.8, d: -0.4 }],
+  manueel: [{ r: 0.9, d: -0.3 }, { r: 1.0, d: -0.2 }, { r: 0.4, d: -0.5 }, { r: 0.9, d: -0.1 }, { r: 0.9, d: -0.4 }, { r: 1.2, d: -0.2 }, { r: 0.6, d: -0.3 }, { r: 1.1, d: -0.2 }, { r: 0.8, d: -0.1 }],
+}
+const PERF_MONTHS = ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September"]
+
+function PerformanceTable() {
+  const [active, setActive] = useState(new Set([1, 2, 3]))
+
+  const toggleStrategy = (id) => {
+    setActive(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) { if (next.size > 1) next.delete(id) } else { next.add(id) }
+      return next
+    })
+  }
+
+  const count = active.size
+  const colors = CHART_COLORS[count]
+
+  // Combine active strategies
+  const rows = PERF_MONTHS.map((month, i) => {
+    let r = 0, d = 0
+    if (active.has(1)) { r += PERF_DATA.scalp[i].r; d += PERF_DATA.scalp[i].d }
+    if (active.has(2)) { r += PERF_DATA.grid[i].r; d += PERF_DATA.grid[i].d }
+    if (active.has(3)) { r += PERF_DATA.manueel[i].r; d += PERF_DATA.manueel[i].d }
+    return { month, r, d }
+  })
+
+  const totalReturn = rows.reduce((s, row) => s + row.r, 0)
+  const avgDrawdown = rows.reduce((s, row) => s + row.d, 0) / rows.length
+
+  return (
+    <div style={{
+      background: "linear-gradient(170deg, #0d0d0d 0%, #080808 100%)",
+      border: "1px solid #1a1a1a", borderRadius: 24, overflow: "hidden",
+      boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(137,251,246,0.04)",
+    }}>
+      {/* Accent top line */}
+      <div style={{ height: 2, background: `linear-gradient(90deg, transparent, ${colors.main}, transparent)`, transition: "all 0.5s" }} />
+
+      {/* Header with toggles */}
+      <div style={{ padding: "28px 28px 0" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16, marginBottom: 12 }}>
+          <div>
+            <span style={{ color: "#555", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em" }}>Maandelijks overzicht</span>
+            <div style={{ color: colors.main, fontSize: "2.2rem", fontWeight: 800, letterSpacing: "-0.03em", marginTop: 4, transition: "color 0.5s" }}>
+              +{totalReturn.toFixed(1)}%
+            </div>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 6,
+              background: `${colors.main}12`, borderRadius: 100, padding: "5px 12px", marginTop: 6,
+              transition: "all 0.5s",
+            }}>
+              <span style={{ width: 5, height: 5, borderRadius: "50%", background: colors.main, transition: "background 0.5s" }} />
+              <span style={{ color: colors.main, fontSize: "0.66rem", fontWeight: 600, whiteSpace: "nowrap", transition: "color 0.5s" }}>
+                {count === 3 ? "Volledig portfolio" : count === 2 ? "Gedeeltelijk portfolio" : "Enkele strategie"}
+              </span>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, color: "#555", fontSize: "0.8rem" }}>
+            <span style={{ color: "#444", fontSize: "0.65rem", fontWeight: 500 }}>Gem. drawdown: <span style={{ color: "#ff6b6b" }}>{avgDrawdown.toFixed(1)}%</span></span>
+          </div>
+        </div>
+
+        {/* Toggle panel — identical to hero */}
+        <div style={{
+          marginTop: 8, marginBottom: 0,
+          background: "#080808", border: "1px solid #151515", borderRadius: 14,
+          padding: "14px 16px",
+        }}>
+          <span style={{ color: "#444", fontSize: "0.62rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", display: "block", marginBottom: 10 }}>Actieve strategieën</span>
+          <div className="chart-toggles">
+            {STRATEGIES.map((s) => {
+              const isOn = active.has(s.id)
+              return (
+                <button key={s.id} onClick={() => toggleStrategy(s.id)} style={{
+                  flex: 1, display: "flex", alignItems: "center", gap: 8,
+                  background: "none", border: "none", cursor: "pointer", padding: 0,
+                }}>
+                  <div style={{
+                    width: 36, height: 20, borderRadius: 10, padding: 2,
+                    background: isOn ? ACCENT : "#282828",
+                    transition: "background 0.3s",
+                    flexShrink: 0, display: "flex", alignItems: "center",
+                  }}>
+                    <div style={{
+                      width: 16, height: 16, borderRadius: "50%", background: "#fff",
+                      transform: isOn ? "translateX(16px)" : "translateX(0)",
+                      transition: "transform 0.3s cubic-bezier(.23,1,.32,1)",
+                      boxShadow: isOn ? `0 0 8px ${ACCENT}60` : "0 1px 3px rgba(0,0,0,0.4)",
+                    }} />
+                  </div>
+                  <span style={{ color: isOn ? "#fff" : "#555", fontSize: "0.75rem", fontWeight: 500, transition: "color 0.3s" }}>{s.name}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div style={{ overflowX: "auto", padding: "0" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 500 }}>
+          <thead>
+            <tr style={{ borderBottom: "1px solid #1a1a1a" }}>
+              {["Maand", "Rendement", "Drawdown", "Cumulatief"].map((h, i) => (
+                <th key={i} style={{ padding: "14px 28px", textAlign: "left", color: "#555", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => {
+              const cumulative = rows.slice(0, i + 1).reduce((s, r) => s + r.r, 0)
+              return (
+                <tr key={i} style={{
+                  borderBottom: i < rows.length - 1 ? "1px solid #111" : "none",
+                  transition: "background 0.3s",
+                }}>
+                  <td style={{ padding: "16px 28px", color: "#ccc", fontSize: "0.9rem" }}>{row.month}</td>
+                  <td style={{ padding: "16px 28px", color: colors.main, fontSize: "0.9rem", fontWeight: 600, transition: "color 0.5s" }}>+{row.r.toFixed(1)}%</td>
+                  <td style={{ padding: "16px 28px", color: "#ff6b6b", fontSize: "0.9rem" }}>{row.d.toFixed(1)}%</td>
+                  <td style={{ padding: "16px 28px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <div style={{ flex: 1, maxWidth: 120, height: 4, background: "#1a1a1a", borderRadius: 2, overflow: "hidden" }}>
+                        <div style={{
+                          height: "100%", borderRadius: 2,
+                          background: colors.main,
+                          width: `${Math.min((cumulative / (totalReturn || 1)) * 100, 100)}%`,
+                          transition: "all 0.5s",
+                        }} />
+                      </div>
+                      <span style={{ color: colors.main, fontSize: "0.8rem", fontWeight: 600, fontVariantNumeric: "tabular-nums", transition: "color 0.5s" }}>+{cumulative.toFixed(1)}%</span>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Bottom summary — mirrors hero chart footer */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 0, margin: "0 24px", borderTop: "1px solid #151515" }}>
+        {[
+          { label: "Totaal rendement", val: `+${totalReturn.toFixed(1)}%`, color: colors.main },
+          { label: "Strategieën", val: `${count}/3`, color: count === 3 ? ACCENT : count === 2 ? "#4caf50" : "#ff9800" },
+          { label: "Gem. drawdown", val: `${avgDrawdown.toFixed(1)}%`, color: "#ff6b6b" },
+        ].map((m, i) => (
+          <div key={i} style={{ textAlign: "center", padding: "18px 8px", borderRight: i < 2 ? "1px solid #151515" : "none" }}>
+            <div style={{ color: m.color, fontWeight: 700, fontSize: "1rem", marginBottom: 3, transition: "color 0.5s" }}>{m.val}</div>
+            <div style={{ color: "#444", fontSize: "0.68rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.06em" }}>{m.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ height: 20 }} />
+    </div>
+  )
+}
+
+
 /* ════════════════════════════════════════════════════ */
 /*  HOMEPAGE                                            */
 /* ════════════════════════════════════════════════════ */
@@ -583,53 +748,14 @@ export default function HomePage() {
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <span style={{ color: ACCENT, fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", display: "block", marginBottom: 16 }}>Performance</span>
             <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 16 }}>
-              Waar serieuze investeerders naar kijken
+              De cijfers achter de grafiek
             </h2>
+            <p style={{ color: "#999", fontSize: "1.05rem", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
+              Bekijk het maandelijkse rendement per strategie-combinatie. Schakel strategieën aan of uit om het effect op rendement en drawdown te zien.
+            </p>
           </div>
 
-          <div className="metric-grid">
-            <MetricBlock label="Maandelijkse rendementen" value="~5%" sub="Consistentie, niet uitschieters" delay={0}/>
-            <MetricBlock label="Drawdown" value="Beheerst" sub="Risico eerst, rendement daarna" delay={100}/>
-            <MetricBlock label="Risk metrics" value="Gestructureerd" sub="Elke positie binnen risicomodel" delay={200}/>
-          </div>
-
-          <div style={{
-            marginTop: 48, background: "#0a0a0a", border: "1px solid #1a1a1a", borderRadius: 16, overflow: "hidden",
-          }}>
-            <div style={{ padding: "24px 28px", borderBottom: "1px solid #1a1a1a" }}>
-              <span style={{ color: "#fff", fontWeight: 600 }}>Maandelijks overzicht</span>
-              <span style={{ color: "#555", fontSize: "0.85rem", marginLeft: 12 }}>(voorbeeld)</span>
-            </div>
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 500 }}>
-                <thead>
-                  <tr style={{ borderBottom: "1px solid #1a1a1a" }}>
-                    {["Maand", "Rendement", "Drawdown", "Status"].map((h, i) => (
-                      <th key={i} style={{ padding: "14px 24px", textAlign: "left", color: "#555", fontSize: "0.8rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { m: "Januari", r: "+4.8%", d: "-1.2%", s: true },
-                    { m: "Februari", r: "+5.3%", d: "-0.9%", s: true },
-                    { m: "Maart", r: "+3.7%", d: "-1.8%", s: true },
-                    { m: "April", r: "+6.1%", d: "-1.1%", s: true },
-                    { m: "Mei", r: "+4.2%", d: "-1.5%", s: true },
-                  ].map((row, i) => (
-                    <tr key={i} style={{ borderBottom: "1px solid #111" }}>
-                      <td style={{ padding: "16px 24px", color: "#ccc", fontSize: "0.9rem" }}>{row.m}</td>
-                      <td style={{ padding: "16px 24px", color: ACCENT, fontSize: "0.9rem", fontWeight: 600 }}>{row.r}</td>
-                      <td style={{ padding: "16px 24px", color: "#ff6b6b", fontSize: "0.9rem" }}>{row.d}</td>
-                      <td style={{ padding: "16px 24px" }}>
-                        <span style={{ background: "rgba(76,175,80,0.15)", color: "#4caf50", fontSize: "0.75rem", fontWeight: 600, padding: "4px 12px", borderRadius: 100 }}>Afgerond</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <PerformanceTable />
         </div>
       </Section>
 
