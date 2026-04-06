@@ -1,30 +1,22 @@
 "use client";
-
 import { useState, useEffect } from "react";
-
 export default function Preloader() {
   const [phase, setPhase] = useState("loading");
-
   useEffect(() => {
     if (sessionStorage.getItem("preloaderShown")) {
       setPhase("done");
       return;
     }
-
     sessionStorage.setItem("preloaderShown", "true");
     setPhase("enter");
-
     const holdTimer = setTimeout(() => setPhase("exit"), 3100);
     const doneTimer = setTimeout(() => setPhase("done"), 3900);
-
     return () => {
       clearTimeout(holdTimer);
       clearTimeout(doneTimer);
     };
   }, []);
-
   if (phase === "done" || phase === "loading") return null;
-
   return (
     <div
       style={{
@@ -43,8 +35,8 @@ export default function Preloader() {
       }}
     >
       <img
-        src="/logo-wit-zwart-bg.png"
-        alt="TrustedPips"
+        src="/Logo wit zwart achtergrond.svg"
+        alt="TP-Investing"
         style={{
           width: 100,
           height: 100,
